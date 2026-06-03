@@ -59,6 +59,18 @@ void tambahObat(obat dataObat[], int &totalObat){
 	cout << "              TAMBAH DATA OBAT BARU             \n";
     cout << "================================================\n";
 
+    string kodeBaru;
+    cout << "Masukkan kode obat : "; getline(cin, kodeBaru);
+    for (int i = 0; i < totalObat; i++) {
+        if (dataObat[i].kode == kodeBaru) {
+            cout << "\n[ERROR] Kode obat '" << kodeBaru << "' sudah terdaftar di database!\n";
+            cout << "Proses dibatalkan. Tekan Enter untuk kembali...";
+            cin.get();
+            system("cls");
+            return;
+        }
+    }
+    dataObat[totalObat].kode = kodeBaru;
     cout << "Masukkan kode obat : "; getline(cin, dataObat[totalObat].kode);
     cout << "Masukkan nama obat : "; getline(cin, dataObat[totalObat].nama);
     cout << "Masukkan stok obat : "; cin >> dataObat[totalObat].stok;
@@ -127,6 +139,7 @@ void cariObat(obat dataObat[], int total){
     if (total == 0)
     {
         cout << "Data obat masih kosong!\n";
+        return;
     }
 
     cout << "================================================\n";
