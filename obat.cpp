@@ -177,6 +177,12 @@ void cariObat(obat dataObat[], int total){
 }
 
 void urutkanObat(obat dataObat[], int total){
+    
+    if (total == 0)
+    {
+        cout << "Data obat masih kosong!\n";
+        return;
+    }
     for (int i = 0; i < total - 1; i++){
         int minIdx = i;
         for (int j = i + 1; j < total; j++){
@@ -189,6 +195,7 @@ void urutkanObat(obat dataObat[], int total){
             dataObat[i] = dataObat[minIdx];
             dataObat[minIdx] = temp;
         }
+        cout << "\n[SUKSES] Data berhasil diurutkan berdasarkan kode!\n";
     }
 }
 
@@ -222,7 +229,6 @@ int main (){
         case 2: tampilkanObat(databaseObat, jumlah); break;
         case 3: cariObat(databaseObat, jumlah);break;
         case 4: urutkanObat(databaseObat, jumlah);
-        cout << "\n[SUKSES] Data berhasil diurutkan berdasarkan kode!\n";
 		cin.get();
 		system("cls");
         break;
