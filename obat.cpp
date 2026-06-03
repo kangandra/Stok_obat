@@ -37,44 +37,6 @@ int muatData(obat ob[]){
     return jumlah;
 }
 
-void tambahObat(obat dataObat[], int &totalObat){
-
-}
-
-void tampilkanObat(){
-
-}
-
-void cariObat(obat dataObat[], int total){
-    int pilih ;
-
-    if (total == 0)
-    {
-        cout << "Data pemain masih kosong!\n";
-    }
-
-    cout << "\n=== CARI OBAT ===" << endl;
-    cout << "1. Cari berdasarkan kode obat" << endl;
-    cout << "2. Cari berdasarkan nama obat" << endl;
-    cout << "3. Cari berdasarkan stok" << endl;
-    cout << "4. Cari berdasarkan harga" << endl;
-    cout << pilih; cin >> pilih;
-
-    switch (pilih)
-    {
-    case 1:
-        
-        break;
-    
-    default:
-        break;
-    }
-
-}
-
-void urutkanObat(){
-
-}
 
 void simpanData(obat db[], int total){
     ofstream file(file_obat, ios::trunc);
@@ -84,6 +46,112 @@ void simpanData(obat db[], int total){
     }
     file.close();
 }
+
+
+void tambahObat(obat dataObat[], int &totalObat){
+    if(totalObat >= MAX_OBAT){
+        cout << "[ERROR] Database pemain penuh!\n";
+        return;
+    }
+
+    cout << "\n=== TAMBAH DATA OBAT BARU ===" << endl;
+
+    cout << "Masukkan kode obat : "; getline(cin, dataObat[totalObat].kode);
+    cout << "Masukkan nama obat : "; getline(cin, dataObat[totalObat].nama);
+    cout << "Masukkan stok obat : "; cin >> dataObat[totalObat].stok;
+    cout << "Masukkan harga obat : "; cin >> dataObat[totalObat].harga;
+    cout << "Masukkan tanggal expired : "; getline(cin, dataObat[totalObat].expired);
+
+    totalObat++;
+    simpanData(dataObat, totalObat);
+
+    cout << "\n[SUKSES] Data pemain berhasil ditambahkan!" << endl;
+}
+
+void tampilkanObat(){
+
+}
+
+int cariKode(obat db[], int total, string kodeCari){
+    int min = 0;
+    int max = total - 1;
+
+    while (min <= max)
+    {
+        int mid = (min + max) / 2;
+
+        if (db [mid].kode == kodeCari)
+        {
+            return mid;
+        } else if(kodeCari < db[mid].kode){
+            max = mid - 1;
+        }else{
+            min = mid +1;
+        }     
+    }
+    return -1;
+}
+
+void cariObat(obat dataObat[], int total){
+    int pilih ;
+
+    if (total == 0)
+    {
+        cout << "Data obat masih kosong!\n";
+    }
+
+    cout << "\n=== CARI OBAT ===" << endl;
+    cout << "1. Cari berdasarkan kode obat" << endl;
+    cout << "2. Cari berdasarkan nama obat" << endl;
+    cout << pilih; cin >> pilih;
+
+    switch (pilih)
+    {
+    case 1:{
+        string kodeCari;
+        // urutkanObat(dataObat, total);
+
+        cout << "Masukkan kode obat : "; getline(cin, kodeCari);
+
+        int hasil = cariKode(dataObat, total, kodeCari);
+        if (hasil != -1)
+        {
+            tampilkanObat();
+        }else{
+            cout << "Data obat dengan kode tersebut tidak ditemukan!\n";
+        }
+        break;
+    }
+    case 2:{
+        string namaCari;
+        bool found = false;
+
+        cout << "Masukkan nama obat : "; getline(cin, namaCari);
+
+        for (int i = 0; i < total; i++)
+        {
+            if (dataObat[i].nama == namaCari)
+            {
+                //tampilkanObat(dataObat[i]);
+                found = true;
+            }         
+        }
+        if (!found)
+        {
+            cout << "Tidak ada obat yang sesuai dengan kriteria\n";
+        }     
+        break;}
+    default:
+        cout << "Pilihan tidak valid." << endl;
+        break;
+    }
+
+}
+
+void urutkanObat(){
+
+}
+
 
 int main (){
     obat databaseObat[MAX_OBAT];
