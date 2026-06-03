@@ -19,6 +19,11 @@ int MAX_OBAT = 100;
 int muatData(obat ob[]){
     ifstream file(file_obat);
     int jumlah = 0;
+
+    if (!file.is_open()) {
+        cout << "File tidak ditemukan, memulai dengan data kosong.\n";
+        return 0; 
+    }
     
     while (file >> ob[jumlah].kode >> ob[jumlah].nama >> ob[jumlah].stok >> ob[jumlah].harga >> ob[jumlah].expired)
     {
@@ -33,33 +38,37 @@ int muatData(obat ob[]){
 }
 
 void tambahObat(obat dataObat[], int &totalObat){
-    if (totalObat >= MAX_OBAT)
-    {
-        cout << "Kapasitas penyimpanan penuh!!\n";
-        return;
-    }
 
-    cout << "\n-- Tambah Obat Baru --" << endl;
-    int jumlah;
-    cout << "Jumlah obat : "; cin >> jumlah; cin.ignore();
-    
-    for (int i = 0; i < jumlah; i++)
-    {
-        cout << "Data obat ke-" << (i+1) << endl;
-        cout << "Kode obat\t: "; getline(cin, dataObat[i].kode);
-        cout << "Nama obat\t: "; getline(cin, dataObat[i].nama);
-        cout << "Stok obat\t: "; cin >> dataObat[i].stok;
-        cout << "Harga obat\t: "; cin >> dataObat[i].harga;
-        cout << "Expired\t: "; getline(cin, dataObat[i].expired);
-    }
-    cout << "Data berhasil ditambahkan\n";
 }
 
 void tampilkanObat(){
 
 }
 
-void cariObat(){
+void cariObat(obat dataObat[], int total){
+    int pilih ;
+
+    if (total == 0)
+    {
+        cout << "Data pemain masih kosong!\n";
+    }
+
+    cout << "\n=== CARI OBAT ===" << endl;
+    cout << "1. Cari berdasarkan kode obat" << endl;
+    cout << "2. Cari berdasarkan nama obat" << endl;
+    cout << "3. Cari berdasarkan stok" << endl;
+    cout << "4. Cari berdasarkan harga" << endl;
+    cout << pilih; cin >> pilih;
+
+    switch (pilih)
+    {
+    case 1:
+        
+        break;
+    
+    default:
+        break;
+    }
 
 }
 
@@ -67,8 +76,13 @@ void urutkanObat(){
 
 }
 
-void simpanData(){
-
+void simpanData(obat db[], int total){
+    ofstream file(file_obat, ios::trunc);
+    for (int i = 0; i < total; i++)
+    {
+        file << db[i].kode << " " << db[i].nama << " " << db[i].stok << " " << db[i].harga << " " << db[i].expired << "\n";
+    }
+    file.close();
 }
 
 int main (){
@@ -93,9 +107,9 @@ int main (){
         {
         case 1: tambahObat(databaseObat, jumlah); break;
         case 2: tampilkanObat(); break;
-        case 3: cariObat(); break;
+        case 3: cariObat(databaseObat, jumlah); break;
         case 4: urutkanObat(); break;
-        case 5: simpanData(); break;
+        case 5: simpanData(databaseObat, jumlah); break;
         default:
             cout << "Pilihan tidak valid!!!";
             break;
