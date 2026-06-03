@@ -14,6 +14,7 @@ struct obat
 
 string file_obat = "data_obat.txt";
 int MAX_OBAT = 100;
+void urutkanObat(obat dataObat[], int total);
 
 
 int muatData(obat ob[]){
@@ -54,22 +55,48 @@ void tambahObat(obat dataObat[], int &totalObat){
         return;
     }
 
-    cout << "\n=== TAMBAH DATA OBAT BARU ===" << endl;
+    cout << "================================================\n";
+	cout << "              TAMBAH DATA OBAT BARU             \n";
+    cout << "================================================\n";
 
     cout << "Masukkan kode obat : "; getline(cin, dataObat[totalObat].kode);
     cout << "Masukkan nama obat : "; getline(cin, dataObat[totalObat].nama);
     cout << "Masukkan stok obat : "; cin >> dataObat[totalObat].stok;
     cout << "Masukkan harga obat : "; cin >> dataObat[totalObat].harga;
+    cin.ignore();
     cout << "Masukkan tanggal expired : "; getline(cin, dataObat[totalObat].expired);
-
+    cout << "================================================\n";
     totalObat++;
     simpanData(dataObat, totalObat);
 
-    cout << "\n[SUKSES] Data pemain berhasil ditambahkan!" << endl;
+    cout << "\n[SUKSES] Data obat berhasil ditambahkan!" << endl;
+    cin.ignore();
+    system("cls");
 }
 
-void tampilkanObat(){
+void tampilkanObat(obat dataObat[], int total){
+    cout << "================================================\n";
+	cout << "               DAFTAR DATA OBAT                 \n";
+    cout << "================================================\n";
 
+    if (total == 0) {
+        cout << "Data obat masih kosong!\n";
+        return;
+    }
+
+    for (int i = 0; i < total; i++) {
+        cout << "------------------------------------------------\n";
+        cout << "Kode Obat         : " << dataObat[i].kode << endl;
+        cout << "Nama Obat         : " << dataObat[i].nama << endl;
+        cout << "Stok Obat         : " << dataObat[i].stok << endl;
+        cout << "Harga Obat        : " << dataObat[i].harga << endl;
+        cout << "Tanggal Expired   : " << dataObat[i].expired << endl;
+        cout << "================================================\n";
+    }
+
+    cout << "Press any key to continue . . .";
+    cin.get();
+    system("cls");
 }
 
 int cariKode(obat db[], int total, string kodeCari){
@@ -89,6 +116,8 @@ int cariKode(obat db[], int total, string kodeCari){
             min = mid +1;
         }     
     }
+    cin.ignore();
+    system("cls");
     return -1;
 }
 
@@ -100,23 +129,25 @@ void cariObat(obat dataObat[], int total){
         cout << "Data obat masih kosong!\n";
     }
 
-    cout << "\n=== CARI OBAT ===" << endl;
+    cout << "================================================\n";
+	cout << "                   CARI OBAT                    \n";
+    cout << "================================================\n";
     cout << "1. Cari berdasarkan kode obat" << endl;
     cout << "2. Cari berdasarkan nama obat" << endl;
-    cout << pilih; cin >> pilih;
+    cout << "================================================\n";
+    cout << "pilih (1-2) :"; cin >> pilih;
+    cin.ignore();
 
     switch (pilih)
     {
     case 1:{
         string kodeCari;
-        // urutkanObat(dataObat, total);
-
-        cout << "Masukkan kode obat : "; getline(cin, kodeCari);
-
+         urutkanObat(dataObat, total);
+        cout << " Masukkan kode obat :";getline(cin, kodeCari);
         int hasil = cariKode(dataObat, total, kodeCari);
         if (hasil != -1)
         {
-            tampilkanObat();
+            tampilkanObat(&dataObat[hasil], 1);
         }else{
             cout << "Data obat dengan kode tersebut tidak ditemukan!\n";
         }
@@ -125,14 +156,12 @@ void cariObat(obat dataObat[], int total){
     case 2:{
         string namaCari;
         bool found = false;
-
-        cout << "Masukkan nama obat : "; getline(cin, namaCari);
-
+        cout << " Masukkan nama obat : "; getline(cin, namaCari);
         for (int i = 0; i < total; i++)
         {
             if (dataObat[i].nama == namaCari)
             {
-                //tampilkanObat(dataObat[i]);
+                tampilkanObat(&dataObat[i], 1);
                 found = true;
             }         
         }
@@ -145,38 +174,58 @@ void cariObat(obat dataObat[], int total){
         cout << "Pilihan tidak valid." << endl;
         break;
     }
-
 }
 
-void urutkanObat(){
-
+void urutkanObat(obat dataObat[], int total){
+    for (int i = 0; i < total - 1; i++){
+        int minIdx = i;
+        for (int j = i + 1; j < total; j++){
+            if (dataObat[j].kode < dataObat[minIdx].kode){
+                minIdx = j;
+            }
+        }
+        if (minIdx != i){
+            obat temp = dataObat[i];
+            dataObat[i] = dataObat[minIdx];
+            dataObat[minIdx] = temp;
+        }
+    }
 }
+
+
 
 
 int main (){
     obat databaseObat[MAX_OBAT];
-    muatData(databaseObat);
     int jumlah = muatData(databaseObat);
 
     int pilihan;
     do
     {
-        cout << "\n=== SISTEM MANAJEMEN STOK APOTEK ===" << endl;
-        cout << "1. Tambah Data Obat" << endl;
-        cout << "2. Tampilkan Semua Obat" << endl;
-        cout << "3. Cari Obat (Searching)" << endl;
-        cout << "4. Urutkan Obat (Sorting)" << endl;
-        cout << "5. Simpan Data & Keluar" << endl;
+    cout << "================================================\n";
+	cout << "           SISTEM MANAJEMEN STOK APOTEK         \n";
+    cout << "================================================\n";
+    cout << "1. Tambah Data Obat" << endl;
+    cout << "2. Tampilkan Semua Obat" << endl;
+    cout << "3. Cari Obat (Searching)" << endl;
+    cout << "4. Urutkan Obat (Sorting)" << endl;
+    cout << "5. Simpan Data & Keluar" << endl;
+    cout << "================================================\n";
         cout << "Pilih menu (1-5): ";
         cin >> pilihan;
         cin.ignore();
+        system ("cls");
 
         switch (pilihan)
         {
         case 1: tambahObat(databaseObat, jumlah); break;
-        case 2: tampilkanObat(); break;
-        case 3: cariObat(databaseObat, jumlah); break;
-        case 4: urutkanObat(); break;
+        case 2: tampilkanObat(databaseObat, jumlah); break;
+        case 3: cariObat(databaseObat, jumlah);break;
+        case 4: urutkanObat(databaseObat, jumlah);
+        cout << "\n[SUKSES] Data berhasil diurutkan berdasarkan kode!\n";
+		cin.get();
+		system("cls");
+        break;
         case 5: simpanData(databaseObat, jumlah); break;
         default:
             cout << "Pilihan tidak valid!!!";
@@ -185,4 +234,5 @@ int main (){
     } while (pilihan != 5);
     
     return 0;
+    
 }
