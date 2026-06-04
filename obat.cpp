@@ -71,7 +71,6 @@ void tambahObat(obat dataObat[], int &totalObat){
         }
     }
     dataObat[totalObat].kode = kodeBaru;
-    cout << "Masukkan kode obat : "; getline(cin, dataObat[totalObat].kode);
     cout << "Masukkan nama obat : "; getline(cin, dataObat[totalObat].nama);
     cout << "Masukkan stok obat : "; cin >> dataObat[totalObat].stok;
     cout << "Masukkan harga obat : "; cin >> dataObat[totalObat].harga;
@@ -128,8 +127,6 @@ int cariKode(obat db[], int total, string kodeCari){
             min = mid +1;
         }     
     }
-    cin.ignore();
-    system("cls");
     return -1;
 }
 
@@ -155,7 +152,7 @@ void cariObat(obat dataObat[], int total){
     {
     case 1:{
         string kodeCari;
-         urutkanObat(dataObat, total);
+        urutkanObat(dataObat, total);
         cout << " Masukkan kode obat :";getline(cin, kodeCari);
         int hasil = cariKode(dataObat, total, kodeCari);
         if (hasil != -1)
@@ -189,8 +186,7 @@ void cariObat(obat dataObat[], int total){
     }
 }
 
-void urutkanObat(obat dataObat[], int total){
-    
+void urutkanObat(obat dataObat[], int total){  
     if (total == 0)
     {
         cout << "Data obat masih kosong!\n";
@@ -208,7 +204,6 @@ void urutkanObat(obat dataObat[], int total){
             dataObat[i] = dataObat[minIdx];
             dataObat[minIdx] = temp;
         }
-        cout << "\n[SUKSES] Data berhasil diurutkan berdasarkan kode!\n";
     }
 }
 
@@ -242,6 +237,7 @@ int main (){
         case 2: tampilkanObat(databaseObat, jumlah); break;
         case 3: cariObat(databaseObat, jumlah);break;
         case 4: urutkanObat(databaseObat, jumlah);
+        cout << "\n[SUKSES] Data berhasil diurutkan berdasarkan kode!\n";
 		cin.get();
 		system("cls");
         break;
